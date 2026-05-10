@@ -1,0 +1,145 @@
+# Main Configuration for Resilience System
+# This file configures the NARadio-based segmentation and semantic processing
+
+# Path Planning Configuration
+path_mode:
+  # Mode 1: "json_file" - Load nominal path from JSON and publish to global path topic
+  # Mode 2: "external_planner" - Listen to external planner's global path topic
+  mode: "external_planner"  # Options: "json_file", "external_planner"
+  
+  # Global path topic configuration (used in both modes)
+  global_path_topic: "/global_path"  # Standard nav_msgs/Path topic
+  
+  # Trajectory discretization configuration (used in both modes)
+  discretization:
+    sampling_distance: 0.1  # meters - Distance between discretized points
+    lookback_window_size: 20  # number of points - Size of lookback window for analysis
+    default_soft_threshold: 0.  # meters - Default soft threshold (30cm)
+  
+  # JSON file configuration (only used when mode is "json_file")
+  json_file:
+    nominal_path_file: "adjusted_nominal_spline.json"  # Relative to assets directory
+    publish_rate: 1.0  # Hz - How often to publish the nominal path
+  
+  # External planner configuration (only used when mode is "external_planner")
+  external_planner:
+    timeout_seconds: 10.0  # How long to wait for external path before warning
+    require_path: true  # Whether to require path before starting drift detection
+    # Threshold configuration for external mode (when JSON thresholds are not available)
+    thresholds:
+      soft_threshold: 0.1  # Default soft threshold for breach detection
+      hard_threshold: 0.4  # Default hard threshold for breach detection
+
+
+preloaded_objects:
+  # # Example configuration:
+  # - name: "bright white torch light"  # Object name (must match VLM answer format)
+    # gp_params_file: "/home/navin/ros2_ws/src/resilience/assets/run_20260509_164753_853_9e0ac43c/buffer2/voxel_gp_fit.json"  # Path to GP fit JSON file
+    # enabled: true  # Whether to load this object at startup
+
+  # The GP params file should be a JSON file with structure:
+  # {
+  #   "fit_params": {
+  #     "lxy": float,
+  #     "lz": float,
+  #     "A": float,
+  #     "b": float,
+  #     "mse": float,
+  #     "rmse": float,
+  #     "mae": float,
+  #     "r2_score": float,
+  #     ...
+  #   }
+  # }
+  # - name: "white box fan"
+  #   gp_params_file: "/root/AirStack/robot/ros_ws/src/autonomy/4_global/a_world_models/resilience/buffers/run_*/buffer_*/voxel_gp_fit.json"
+  #   enabled: true
+
+# Topic Configuration
+topics:
+  # Input topics
+  rgb_topic: "/camera/camera/color/image_raw"
+  depth_topic: "/camera/camera/aligned_depth_to_color/image_raw"
+  pose_topic: "/Odometry"
+  camera_info_topic: "/camera/camera/depth/camera_info"
+  vlm_answer_topic: "/vlm_answer"
+  
+  # Output topics
+  drift_narration_topic: "/drift_narration"
+  narration_text_topic: "/narration_text"
+  naradio_image_topic: "/naradio_image"
+  narration_image_topic: "/narration_image"
+  vlm_similarity_map_topic: "/vlm_similarity_map"
+  vlm_similarity_colored_topic: "/vlm_similarity_colored"
+  vlm_objects_legend_topic: "/vlm_objects_legend"
+
+# Camera / image orientation
+camera:
+  # If the physical stereo camera is mounted upside-down, set this to 180.
+  # Valid values: 0, 180.
+  image_rotation_deg: 0
+
+# Object List for Segmentation
+# These objects will be encoded into embeddings and used for segmentation
+objects:
+  - "table"
+
+# Voxel Mapping Control
+enable_voxel_mapping: true  # Master switch for voxel mapping functionality
+direct_mapping: false  # Enable direct semantic voxel publishing and triplet buffer handling (default: false)
+
+# NARadio Model Configuration
+naradio:
+  model_version: "radio_v2.5-b"
+  lang_model: "siglip"
+  input_resolution: 512
+  enable_visualization: true
+  batch_size: 4  # Number of words to encode at once
+
+# Segmentation Processing Parameters
+segmentation:
+  # Similarity computation
+  apply_softmax: true  # Apply softmax across words for better segmentation
+  normalize_features: true  # Normalize features for cosine similarity
+  
+  # Enhanced embedding preference
+  prefer_enhanced_embeddings: true  # Use enhanced embeddings when available, fallback to VLM text embeddings
+  enhanced_similarity_threshold: 0.1  # Only use pixels with similarity > threshold for enhanced embeddings
+  
+  # DBSCAN clustering for refinement
+  enable_dbscan: true
+  dbscan_eps: 0.3
+  dbscan_min_samples: 5
+  
+  # Color mapping for visualization
+  colors:
+    - [255, 0, 0]      # Red
+    - [0, 255, 0]      # Green  
+    - [0, 0, 255]      # Blue
+    - [255, 255, 0]    # Yellow
+    - [255, 0, 255]    # Magenta
+    - [0, 255, 255]    # Cyan
+    - [255, 128, 0]    # Orange
+    - [128, 0, 255]    # Purple
+    - [128, 128, 0]    # Olive
+    - [0, 128, 128]    # Teal
+    - [128, 0, 128]    # Maroon
+    - [255, 165, 0]    # Orange Red
+    - [75, 0, 130]     # Indigo
+    - [240, 230, 140]  # Khaki
+    - [255, 20, 147]   # Deep Pink
+
+# Semantic Bridge Configuration for Voxel Mapping
+semantic_bridge:
+  # Hotspot detection thresholds
+  hotspot_similarity_threshold: 0.6  # Minimum similarity to consider as hotspot
+  min_hotspot_area: 100  # Minimum pixel area for hotspot regions
+  
+  # Communication settings
+  publish_rate_limit: 2.0  # Max Hz for semantic region publishing
+  
+  # Topic configuration
+  topics:
+    semantic_hotspots_topic: "/semantic_hotspots"
+    semantic_hotspot_mask_topic: "/semantic_hotspot_mask"
+    semantic_hotspot_overlay_topic: "/semantic_hotspot_overlay" 

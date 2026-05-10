@@ -1,0 +1,18 @@
+{
+  "buffer_id": "buffer2",
+  "start_time": 1778325521.9052532,
+  "end_time": 1778325522.0387259,
+  "state": "frozen",
+  "cause": "bright white torch light",
+  "cause_location": null,
+  "has_enhanced_embedding": false,
+  "enhanced_embedding_shape": null,
+  "has_nominal_path": true,
+  "nominal_path_points": 30,
+  "data_counts": {
+    "images": 0,
+    "poses": 1,
+    "depth_msgs": 0
+  },
+  "duration": 0.13347268104553223
+}

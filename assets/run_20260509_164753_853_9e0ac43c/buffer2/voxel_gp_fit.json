@@ -1,0 +1,44 @@
+{
+  "fit_params": {
+    "lxy": 0.992580401803004,
+    "lz": 1.0,
+    "A": 0.027690384115113948,
+    "b": 0.05,
+    "mse": 0.0001779433117561768,
+    "rmse": 0.013339539413194774,
+    "mae": 0.012314415464131792,
+    "r2_score": 0.6146535234887875,
+    "sigma2": 0.0001779433117561768,
+    "nll": -11.451068289083567,
+    "XtX_inv": [
+      [
+        0.008131218588262878
+      ]
+    ],
+    "fixed_b": 0.05,
+    "hess_inv": [
+      [
+        0.055991996726685186,
+        -0.002743141015130319
+      ],
+      [
+        -0.002743141015130319,
+        8.774297476500806
+      ]
+    ]
+  },
+  "optimization": {
+    "nit": 9,
+    "nfev": 30,
+    "success": true,
+    "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  "metadata": {
+    "timestamp": 1778325529.588451,
+    "buffer_dir": "/home/navin/ros2_ws/src/resilience/buffers/run_20260509_164753_853_9e0ac43c/buffer2",
+    "nominal_path": "/root/AirStack/robot/ros_ws/src/autonomy/4_global/a_world_models/resilience/assets/adjusted_nominal_spline.json",
+    "used_nominal_source": "stored_at_breach_start",
+    "has_stored_nominal_path": true,
+    "safe_evidence_points": 14
+  }
+}

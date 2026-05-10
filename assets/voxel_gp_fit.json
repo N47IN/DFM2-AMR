@@ -1,0 +1,26 @@
+{
+  "fit_params": {
+    "lxy": 0.5,
+    "lz": 0.5,
+    "A": 20.78972984641981,
+    "b": 0.05,
+    "mse": 0.01612227375728806,
+    "rmse": 0.12697351596804768,
+    "mae": 0.1146144970353414,
+    "r2_score": -5.356653192509216,
+    "sigma2": 0.01612227375728806,
+    "nll": -17.201544249161646,
+    "XtX_inv": null,
+    "fixed_b": null,
+    "hess_inv": null
+  },
+  "optimization": null,
+  "metadata": {
+    "timestamp": 1771842450.689069,
+    "buffer_dir": "/root/AirStack/robot/ros_ws/src/autonomy/4_global/a_world_models/resilience/buffers/run_20260223_102645_998_2d3c4726/buffer1",
+    "nominal_path": "/root/AirStack/robot/ros_ws/src/autonomy/4_global/a_world_models/resilience/assets/adjusted_nominal_spline.json",
+    "used_nominal_source": "stored_at_breach_start",
+    "has_stored_nominal_path": true,
+    "safe_evidence_points": 50
+  }
+}
